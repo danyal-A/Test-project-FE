@@ -5,19 +5,18 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import signlogo from "../Animations/animation_ll6ibmq4.json";
 function SignUp() {
-  const [validin, setValidin] = useState({
-    id: "",
+  const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
   });
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const getdata = (event) => {
     const { name, value } = event.target;
     // Update the state for the corresponding input field
-    setValidin({
-      ...validin,
+    setData({
+      ...data,
       [name]: value,
     });
   };
@@ -25,9 +24,8 @@ function SignUp() {
   const addData = async (event) => {
     event.preventDefault();
     try {
-        await axios.post("http://localhost/8800/", {
-          validin,
-      });
+      // console.log(data);
+      await axios.post("http://localhost:8800/api/auth/register", data);
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +46,7 @@ function SignUp() {
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
-              value={validin.name}
+              value={data.name}
               placeholder="Enter Name"
               name="name"
               onChange={getdata}
@@ -65,7 +63,7 @@ function SignUp() {
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
-              value={validin.email}
+              value={data.email}
               placeholder="Enter Email"
               name="email"
               onChange={getdata}
@@ -83,7 +81,7 @@ function SignUp() {
               id="password"
               type="password"
               name="password"
-              value={validin.password}
+              value={data.password}
               placeholder="******************"
               onChange={getdata}
             />
@@ -99,7 +97,7 @@ function SignUp() {
               class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="confirpassword"
               type="password"
-              value={validin.confirmpassword}
+              value={data.confirmpassword}
               name="confirmpassword"
               placeholder="******************"
               onChange={getdata}
@@ -113,9 +111,12 @@ function SignUp() {
             >
               Sign Up
             </button>
+            <Link className="hover:text-gray-300  no-underline" to="/">
+              Cancel
+            </Link>
           </div>
         </form>
-        <p class="text-center text-gray-500 text-xs">&copy;</p>
+        <p class="text-center text-gray-500 text-xs">&copy; Danyal-1475</p>
       </div>
       <div>
         <Lottie loop animationData={signlogo} play />

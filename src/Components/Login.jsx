@@ -2,23 +2,25 @@ import React from "react";
 import Lottie from "react-lottie-player";
 import loginImage from "../Animations/animation_ll6lbfrj.json";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function Login() {
-  const [validin, setValidin] = useState({
-    id: "",
+  const history = useNavigate();
+  const [disabled, setDisabled] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const getdata = (event) => {
     const { name, value } = event.target;
     console.log(name, value);
     // Update the state for the corresponding input field
-    setValidin({
-      ...validin,
+    setData({
+      ...data,
       [name]: value,
     });
   };
@@ -26,10 +28,21 @@ export default function Login() {
   const addData = async (event) => {
     event.preventDefault();
     try {
-        await axios.post("http://localhost/8800/", {
-          validin,
-      });
+      const res = await axios.post(
+        "http://localhost:8800/api/auth/login",
+        data
+      );
+      history(`/timeline/${res.data.id}`);
+      // console.log(res.data.id);
     } catch (error) {
+      if (error.response.status === 429) {
+        setDisabled(true);
+        setShowPopup(true);
+        setTimeout(() => {
+          setDisabled(false);
+          setShowPopup(false);
+        }, 1 * 60 * 1000); // Re-enable after 5 minutes
+      }
       console.log(error);
     }
   };
@@ -49,10 +62,11 @@ export default function Login() {
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="email"
                 type="email"
-                value={validin.email}
+                value={data.email}
                 placeholder="Enter Email"
                 name="email"
                 onChange={getdata}
+                disabled={disabled}
               />
             </div>
             <div className="mb-6">
@@ -67,9 +81,10 @@ export default function Login() {
                 id="password"
                 type="password"
                 name="password"
-                value={validin.password}
+                value={data.password}
                 placeholder="******************"
                 onChange={getdata}
+                disabled={disabled}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -77,15 +92,13 @@ export default function Login() {
                 className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
                 type="button"
                 onClick={addData}
+                disabled={disabled}
               >
                 Sign In
               </button>
-              <a
-                className="inline-block no-underline align-baseline font-bold text-sm text-blue-500 hover:text-blue-800"
-                href="#"
-              >
-                Forgot Password?
-              </a>
+              <Link className="hover:text-gray-300  no-underline" to="/" disabled={disabled}>
+                Cancel
+              </Link>
             </div>
           </form>
           <p className="text-center text-gray-500 text-xs">
@@ -96,6 +109,11 @@ export default function Login() {
       <div className="">
         <Lottie loop animationData={loginImage} play />
       </div>
+      {showPopup && (
+        <div className="popup">
+          Login is disabled for 5 minutes. Please try again later.
+        </div>
+      )}
     </div>
   );
 }
