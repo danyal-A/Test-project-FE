@@ -32,7 +32,13 @@ export default function Login() {
         "http://localhost:8800/api/auth/login",
         data
       );
-      history(`/timeline/${res.data.id}`);
+      console.log(res.data.token);
+      localStorage.setItem("loginuser", JSON.stringify(res.data));
+      // , {headers:{
+      //   Authorization: "Bearer + token"
+        
+      // }}
+      history(`/timeline/${res.data.user.id}`);
       // console.log(res.data.id);
     } catch (error) {
       if (error.response.status === 429) {
@@ -96,7 +102,11 @@ export default function Login() {
               >
                 Sign In
               </button>
-              <Link className="hover:text-gray-300  no-underline" to="/" disabled={disabled}>
+              <Link
+                className="hover:text-gray-300  no-underline"
+                to="/"
+                disabled={disabled}
+              >
                 Cancel
               </Link>
             </div>

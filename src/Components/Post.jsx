@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Showpost from "./Showpost";
+import suggest from "../Animations/animation_llnjya3j.json";
+import Lottie from "react-lottie-player";
+import Suggestion from "./Modals/Suggestion";
 
 const Post = (props) => {
-
   // console.log(props);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const userdata = JSON.parse(localStorage.getItem("loginuser"));
+  const closemodal = () => {
+    setModalIsOpen(false);
+  };
+  const suggestContent = async () => {};
   return (
     <div>
       <div class="max-w-lg">
@@ -23,15 +31,27 @@ const Post = (props) => {
               </h5>
             </a>
             <p class="font-normal text-gray-700 mb-3">{props.content}</p>
-            <Link
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
-              to={`/showpost/${props.id}`}
-              // onClick={e => handleReadMore(e)}
-            >
-              Read more
-            </Link>
+            <div className="flex justify-between text-center align-middle">
+              <Link
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-3 py-2 text-center inline-flex items-center"
+                to={`/showpost/${props.id}`}
+                // onClick={e => handleReadMore(e)}
+              >
+                Read more
+              </Link>
+              {/* <Lottie loop animationData={suggest} play height={36} /> */}
+              {userdata.user.id !== props.UserId && (
+                <i
+                  class="fa fa-plus fa-xl cursor-pointer"
+                  aria-hidden="true"
+                  onClick={() => setModalIsOpen(true)}
+                ></i>
+              )}
+            </div>
           </div>
-         {/* {showpost && <Showpost title={props.title} content={props.content} attachment={props.Attachments[0].content} postid={props.id} />} */}
+          {modalIsOpen && (
+            <Suggestion isOpen={modalIsOpen} onRequestClose={closemodal} user={props} />
+          )}
         </div>
       </div>
     </div>

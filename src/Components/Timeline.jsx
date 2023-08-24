@@ -25,7 +25,7 @@ const Timeline = () => {
   return (
     <div>
       <div className="w-full">
-       <NavbarT />
+        <NavbarT />
         <div className="flex bg-white" style={{ height: "600px" }}>
           <div className="flex items-center text-center lg:text-left px-8 md:px-12 lg:w-1/2">
             <div>
@@ -44,12 +44,6 @@ const Timeline = () => {
                   to={`/createpost/${userid.id}`}
                 >
                   Create Blog
-                </Link>
-                <Link
-                  className="mx-4 px-4 py-3 bg-gray-300 text-gray-900 text-xs font-semibold rounded hover:bg-gray-400"
-                  href="#"
-                >
-                  Learn More
                 </Link>
               </div>
             </div>

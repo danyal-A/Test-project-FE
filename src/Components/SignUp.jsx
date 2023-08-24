@@ -11,7 +11,7 @@ function SignUp() {
     password: "",
   });
 
-  // const [data, setData] = useState([]);
+  const histoty = useNavigate();
   const getdata = (event) => {
     const { name, value } = event.target;
     // Update the state for the corresponding input field
@@ -26,6 +26,7 @@ function SignUp() {
     try {
       // console.log(data);
       await axios.post("http://localhost:8800/api/auth/register", data);
+      histoty("/login");
     } catch (error) {
       console.log(error);
     }
