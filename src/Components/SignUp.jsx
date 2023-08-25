@@ -5,10 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import signlogo from "../Animations/animation_ll6ibmq4.json";
 function SignUp() {
+  const [selectedValue, setSelectedValue] = useState("");
   const [data, setData] = useState({
     name: "",
     email: "",
     password: "",
+    role: "",
   });
 
   const histoty = useNavigate();
@@ -18,6 +20,7 @@ function SignUp() {
     setData({
       ...data,
       [name]: value,
+      role: selectedValue,
     });
   };
 
@@ -35,6 +38,47 @@ function SignUp() {
   return (
     <div className="h-screen flex justify-center items-center space-x-12">
       <div class="max-w-xs w-max">
+        <div className="flex justify-between">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="User"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio1">
+              User
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio2"
+              value="Moderator"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio2">
+              Moderator
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="Admin"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio1">
+              Admin
+            </label>
+          </div>
+        </div>
         <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
           <div class="mb-4">
             <label

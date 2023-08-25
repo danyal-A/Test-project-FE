@@ -1,13 +1,10 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Showsuggestions from "./Modals/Showsuggestions";
+import React from "react";
+import NavbarT from "../NavbarT";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
-const NavbarT = ({ userid }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+const ModeratorTimeline = () => {
   const history = useNavigate();
-  const closemodal = () => {
-    setModalIsOpen(false);
-  };
+  const userid = useParams();
   const handlelogout = () => {
     localStorage.removeItem("loginuser");
     localStorage.setItem("loggedin", false);
@@ -22,7 +19,7 @@ const NavbarT = ({ userid }) => {
             <div className="">
               <Link
                 className="text-2xl font-bold text-gray-800 md:text-3xl no-underline"
-                to={`/timeline/${userid}`}
+                to={`/timeline/moderator/${userid}`}
               >
                 Blog Application
               </Link>
@@ -45,16 +42,22 @@ const NavbarT = ({ userid }) => {
           <div className="flex flex-col md:flex-row md:block -mx-2">
             <Link
               className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              to={"/profile"}
+              // to={"/profile"}
             >
               Profile
             </Link>
-            <button
+            <Link
               className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              onClick={() => setModalIsOpen(true)}
+              to={"/report"}
             >
-              Suggestions
-            </button>
+              Reported
+            </Link>
+            <Link
+              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
+              to={"/action"}
+            >
+              Approved
+            </Link>
             <button
               className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
               onClick={() => handlelogout()}
@@ -64,15 +67,8 @@ const NavbarT = ({ userid }) => {
           </div>
         </div>
       </nav>
-      {modalIsOpen && (
-        <Showsuggestions
-          isOpen={modalIsOpen}
-          onRequestClose={closemodal}
-          userid={userid}
-        />
-      )}
     </div>
   );
 };
 
-export default NavbarT;
+export default ModeratorTimeline;

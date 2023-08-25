@@ -21,13 +21,14 @@ const Timeline = () => {
     };
     fetchData();
   }, []);
+
   console.log(posts);
   return (
     <div>
       <div className="w-full">
-        <NavbarT />
+        <NavbarT userid={userid} />
         <div className="flex bg-white" style={{ height: "600px" }}>
-          <div className="flex items-center text-center lg:text-left px-8 md:px-12 lg:w-1/2">
+          <div className="flex items-center text-left px-8 md:px-12 lg:w-1/2">
             <div>
               <h2 className="text-3xl font-semibold text-gray-800 md:text-4xl">
                 Build Your New <span className="text-indigo-600">Idea</span>
@@ -40,7 +41,7 @@ const Timeline = () => {
               </p>
               <div className="flex justify-center lg:justify-start mt-6">
                 <Link
-                  className="px-4 py-3 bg-gray-900 text-gray-200 text-xs font-semibold rounded hover:bg-gray-800"
+                  className="px-4 py-3 bg-gray-900 text-gray-200 text-xs no-underline font-semibold rounded hover:bg-gray-800"
                   to={`/createpost/${userid.id}`}
                 >
                   Create Blog

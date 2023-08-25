@@ -7,11 +7,13 @@ import axios from "axios";
 
 export default function Login() {
   const history = useNavigate();
+  const [selectedValue, setSelectedValue] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [data, setData] = useState({
     email: "",
     password: "",
+    role: "",
   });
 
   // const [data, setData] = useState([]);
@@ -22,6 +24,7 @@ export default function Login() {
     setData({
       ...data,
       [name]: value,
+      role: selectedValue,
     });
   };
 
@@ -32,13 +35,19 @@ export default function Login() {
         "http://localhost:8800/api/auth/login",
         data
       );
-      console.log(res.data.token);
+      console.log(res.data.user.role);
       localStorage.setItem("loginuser", JSON.stringify(res.data));
       // , {headers:{
       //   Authorization: "Bearer + token"
-        
+
       // }}
-      history(`/timeline/${res.data.user.id}`);
+      if (res.data.user.role === "User") {
+        history(`/timeline/${res.data.user.id}`);
+      } else if (res.data.user.role === "Moderator") {
+        history(`/timeline/moderator/${res.data.user.id}`);
+      } else {
+        history(`/timeline/admin/${res.data.user.id}`);
+      }
       // console.log(res.data.id);
     } catch (error) {
       if (error.response.status === 429) {
@@ -52,9 +61,51 @@ export default function Login() {
       console.log(error);
     }
   };
+  // console.log(selectedValue);
   return (
     <div className="h-screen flex justify-center items-center space-x-12">
       <div className="">
+        <div className="flex justify-between">
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="User"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio1">
+              User
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio2"
+              value="Moderator"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio2">
+              Moderator
+            </label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input
+              class="form-check-input"
+              type="radio"
+              name="inlineRadioOptions"
+              id="inlineRadio1"
+              value="Admin"
+              onChange={(e) => setSelectedValue(e.target.value)}
+            />
+            <label class="form-check-label" for="inlineRadio1">
+              Admin
+            </label>
+          </div>
+        </div>
         <div className="w-full max-w-xs">
           <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
             <div className="mb-4">

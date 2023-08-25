@@ -29,7 +29,7 @@ const Profile = () => {
   console.log(details);
   return (
     <div>
-      <NavbarT />
+      <NavbarT userid={userdata.user.id} />
       {details && (
         <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
           <Lottie loop animationData={profilelogo} play />{" "}

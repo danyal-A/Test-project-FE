@@ -8,6 +8,8 @@ import Timeline from "./Components/Timeline";
 import Createpost from "./Components/Createpost";
 import Showpost from "./Components/Showpost";
 import Profile from "./Components/Profile";
+import ModeratorTimeline from "./Components/Moderator/ModeratorTimeline";
+import Action from "./Components/Moderator/Action";
 function App() {
   return (
     <BrowserRouter>
@@ -19,7 +21,10 @@ function App() {
         <Route path="/createpost/:id" element={<Createpost />} />
         <Route path="/showpost/:id" element={<Showpost />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/timeline/moderator/:id" element={<ModeratorTimeline/>} />
+        <Route path="/action" element={<Action/>} />
         
+
         {/* <Route path="*" element={<NoPage />} /> */}
       </Routes>
     </BrowserRouter>

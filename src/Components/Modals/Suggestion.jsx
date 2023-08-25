@@ -10,7 +10,7 @@ const Suggestion = ({ isOpen, onRequestClose, user }) => {
     event.preventDefault();
     await axios.post(`http://localhost:8800/api/suggestion/${user.id}`, {
       content: content,
-      isProved: true,
+      isProved: false,
       userid: user.UserId,
       reply: "reply",
     });
