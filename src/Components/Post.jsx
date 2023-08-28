@@ -5,6 +5,7 @@ import suggest from "../Animations/animation_llnjya3j.json";
 import Lottie from "react-lottie-player";
 import Suggestion from "./Modals/Suggestion";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const Post = (props) => {
   // console.log(props);
@@ -16,6 +17,10 @@ const Post = (props) => {
   const handleProve = async (id) => {
     try {
       const post = await axios.put(`http://localhost:8800/api/posts/${id}`, {});
+      props.fetchData();
+      toast.success("Post approved successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
       console.log(post);
     } catch (error) {
       console.log(error);
@@ -24,17 +29,19 @@ const Post = (props) => {
 
   const handleDisapprove = async (id) => {
     try {
-      const post = await axios.delete(
-        `http://localhost:8800/api/posts/${id}`
-      );
+      const post = await axios.delete(`http://localhost:8800/api/posts/${id}`);
       // history(`/timeline/${postid.id}`);
+      props.fetchData();
+      toast.error("Post deleted successfully!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
     } catch (error) {
       console.log(error);
     }
   };
 
   return (
-    <div>
+    <>
       {userdata.user.role === "User" && props.status === true && (
         <div class="max-w-lg">
           <div class="bg-white shadow-md border ml-6 border-gray-200 rounded-lg max-w-sm mb-5">
@@ -78,6 +85,7 @@ const Post = (props) => {
                 isOpen={modalIsOpen}
                 onRequestClose={closemodal}
                 user={props}
+                // fetchData= {props.fetchData}
               />
             )}
           </div>
@@ -121,7 +129,39 @@ const Post = (props) => {
           </div>
         </div>
       )}
-    </div>
+      {userdata.user.role === "Moderator" && props.isReported === true && props.status === true (
+        <div class="max-w-lg">
+          <div class="bg-white shadow-md border ml-6 border-gray-200 rounded-lg max-w-sm mb-5">
+            <a href="#">
+              <img
+                class="rounded-t-lg"
+                src={props.Attachments[0].content}
+                alt=""
+              />
+            </a>
+            <div class="p-4">
+              <h5 class="text-gray-900 font-bold text-2xl tracking-tight mb-2 no-underline">
+                {props.title}
+              </h5>
+              <div className="block">
+                <p class="font-normal text-gray-700 mb-3 text-ellipsis h-12 overflow-hidden">
+                  {props.content}
+                </p>
+              </div>
+
+              <div className="flex text-center align-middle">
+                <button
+                  className=" text-white bg-red-500 p-2 rounded font-bold"
+                  onClick={() => handleDisapprove(props.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

@@ -2,6 +2,7 @@ import React from "react";
 import Lottie from "react-lottie-player";
 import loginImage from "../Animations/animation_ll6lbfrj.json";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -42,23 +43,46 @@ export default function Login() {
 
       // }}
       if (res.data.user.role === "User") {
+        toast.success("User Successfully Login", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         history(`/timeline/${res.data.user.id}`);
       } else if (res.data.user.role === "Moderator") {
+        toast.success("Moderator Successfully Login", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         history(`/timeline/moderator/${res.data.user.id}`);
       } else {
+        toast.success("Admin Successfully Login", {
+          position: toast.POSITION.TOP_CENTER,
+        });
         history(`/timeline/admin/${res.data.user.id}`);
       }
       // console.log(res.data.id);
     } catch (error) {
-      if (error.response.status === 429) {
-        setDisabled(true);
-        setShowPopup(true);
-        setTimeout(() => {
-          setDisabled(false);
-          setShowPopup(false);
-        }, 1 * 60 * 1000); // Re-enable after 5 minutes
+      if (error.response) {
+        if (error.response.status === 429) {
+          toast.error("Login is Disabled for 5 minutes", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+          setDisabled(true);
+          setShowPopup(true);
+          setTimeout(() => {
+            setDisabled(false);
+            setShowPopup(false);
+          }, 1 * 60 * 1000); // Re-enable after 5 minutes
+        } else if (error.response.data.error === "Invalid Email") {
+          toast.error("Invalid Email", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else if (error.response.data.error === "Invalid password") {
+          toast.error("Invalid Password", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          console.log(error);
+        }
       }
-      console.log(error);
     }
   };
   // console.log(selectedValue);
@@ -90,19 +114,6 @@ export default function Login() {
             />
             <label class="form-check-label" for="inlineRadio2">
               Moderator
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="Admin"
-              onChange={(e) => setSelectedValue(e.target.value)}
-            />
-            <label class="form-check-label" for="inlineRadio1">
-              Admin
             </label>
           </div>
         </div>

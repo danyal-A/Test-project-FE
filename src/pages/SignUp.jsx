@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import Lottie from "react-lottie-player";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import signlogo from "../Animations/animation_ll6ibmq4.json";
 function SignUp() {
   const [selectedValue, setSelectedValue] = useState("");
+
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -16,6 +18,7 @@ function SignUp() {
   const histoty = useNavigate();
   const getdata = (event) => {
     const { name, value } = event.target;
+
     // Update the state for the corresponding input field
     setData({
       ...data,
@@ -27,11 +30,36 @@ function SignUp() {
   const addData = async (event) => {
     event.preventDefault();
     try {
-      // console.log(data);
-      await axios.post("http://localhost:8800/api/auth/register", data);
+      const res = await axios.post(
+        "http://localhost:8800/api/auth/register",
+        data
+      );
+      toast.success("Successfully SignUp", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+
       histoty("/login");
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.status === 409) {
+          // Handle duplicate email error
+          toast.error(
+            "Email is already in use. Please choose a different email.",
+            {
+              position: toast.POSITION.TOP_CENTER,
+            }
+          );
+        } else if (error.response.status === 400) {
+          // Handle role being null error
+          toast.error("Please fill the required fields", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        } else {
+          console.log(error);
+        }
+      } else {
+        console.log(error);
+      }
     }
   };
 
@@ -63,19 +91,6 @@ function SignUp() {
             />
             <label class="form-check-label" for="inlineRadio2">
               Moderator
-            </label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input
-              class="form-check-input"
-              type="radio"
-              name="inlineRadioOptions"
-              id="inlineRadio1"
-              value="Admin"
-              onChange={(e) => setSelectedValue(e.target.value)}
-            />
-            <label class="form-check-label" for="inlineRadio1">
-              Admin
             </label>
           </div>
         </div>

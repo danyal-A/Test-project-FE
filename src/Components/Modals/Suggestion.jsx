@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 const Suggestion = ({ isOpen, onRequestClose, user }) => {
   console.log("hello from suggestion");
   console.log(user);
@@ -13,6 +14,9 @@ const Suggestion = ({ isOpen, onRequestClose, user }) => {
       isProved: false,
       userid: user.UserId,
       reply: "reply",
+    });
+    toast.success("Suggestion send successfully!", {
+      position: toast.POSITION.TOP_CENTER,
     });
     onRequestClose();
   };

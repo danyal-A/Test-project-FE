@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useMemo, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 const Createpost = () => {
   const history = useNavigate();
@@ -39,11 +40,18 @@ const Createpost = () => {
         photo: image,
         PostId: res.data.id,
       });
-      // console.log(result.data);
+      toast.success("Request send to Moderator!");
+      history(`/timeline/${userid.id}`);
     } catch (error) {
+      if (error.response) {
+        if (error.response.data.error === "Field is required") {
+          toast.error("Field is required", {
+            position: toast.POSITION.TOP_CENTER,
+          });
+        }
+      }
       console.log(error);
     }
-    history(`/timeline/${userid.id}`);
   };
   const uploadAttachment = (e) => {
     const file = e.target.files[0];
@@ -118,6 +126,7 @@ const Createpost = () => {
           </button>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React from "react";
 import background from "../Images/Background.jpg";
 import { Link } from "react-router-dom";
-import Navbar from "./Navbar";
+import Navbar from "../Components/Navbar";
 
 const Home = () => {
   return (
@@ -87,7 +87,7 @@ const Home = () => {
             </div>
             <div className="pt-6 w-full md:w-4/12 px-4 text-center">
               <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
-                <div className="px-4 py-5 flex-auto">
+                <div className="px-4 py-5 flex-auto cursor-pointer">
                   <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-emerald-400">
                     <i className="fas fa-fingerprint"></i>
                   </div>
@@ -104,28 +104,7 @@ const Home = () => {
         <footer className="relative  pt-8 pb-6 mt-1">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap items-center md:justify-between justify-center">
-              <div className="w-full md:w-6/12 px-4 mx-auto text-center">
-                <div className="text-sm text-blueGray-500 font-semibold py-1">
-                  Made with{" "}
-                  <a
-                    href="https://www.creative-tim.com/product/notus-js"
-                    className="text-blueGray-500 hover:text-gray-800"
-                    target="_blank"
-                  >
-                    Notus JS
-                  </a>{" "}
-                  by{" "}
-                  <a
-                    href="https://www.creative-tim.com"
-                    className="text-blueGray-500 hover:text-blueGray-800"
-                    target="_blank"
-                  >
-                    {" "}
-                    Creative Tim
-                  </a>
-                  .
-                </div>
-              </div>
+              <div className="w-full md:w-6/12 px-4 mx-auto text-center"></div>
             </div>
           </div>
         </footer>

@@ -1,73 +1,55 @@
 import React from "react";
 import NavbarT from "../NavbarT";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import NavbarM from "./NavbarM";
 
 const ModeratorTimeline = () => {
   const history = useNavigate();
   const userid = useParams();
-  const handlelogout = () => {
-    localStorage.removeItem("loginuser");
-    localStorage.setItem("loggedin", false);
-    history("/Signup");
-  };
 
   return (
-    <div>
-      <nav className="bg-white shadow-lg">
-        <div className="md:flex items-center justify-between py-2 px-8 md:px-12">
-          <div className="flex justify-between items-center">
-            <div className="">
-              <Link
-                className="text-2xl font-bold text-gray-800 md:text-3xl no-underline"
-                to={`/timeline/moderator/${userid}`}
-              >
-                Blog Application
-              </Link>
+    <>
+      <NavbarM />
+
+      <div className="flex items-center justify-center h-screen">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-wrap justify-evenly">
+            <div
+              className="pt-6 w-full md:w-4/12 px-4 text-center cursor-pointer hover:scale-110 transition-all"
+              onClick={() => history(`/action/${userid.id}`)}
+            >
+              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+                <div className="px-4 py-5 flex-auto ">
+                  <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-emerald-400">
+                    <i className="fas fa-clock-0"></i>
+                  </div>
+                  <h6 className="text-xl font-semibold">Pending Post</h6>
+                  <p className="mt-2 mb-4 text-blueGray-500">
+                    All the pending post of the user are here Click on it
+                  </p>
+                </div>
+              </div>
             </div>
-            <div className="md:hidden">
-              <button
-                type="button"
-                className="block text-gray-800 hover:text-gray-700 focus:text-gray-700 focus:outline-none"
-              >
-                <svg className="h-6 w-6 fill-current" viewBox="0 0 24 24">
-                  <path
-                    className="hidden"
-                    d="M16.24 14.83a1 1 0 0 1-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 0 1-1.41-1.41L10.59 12 7.76 9.17a1 1 0 0 1 1.41-1.41L12 10.59l2.83-2.83a1 1 0 0 1 1.41 1.41L13.41 12l2.83 2.83z"
-                  />
-                  <path d="M4 5h16a1 1 0 0 1 0 2H4a1 1 0 1 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2zm0 6h16a1 1 0 0 1 0 2H4a1 1 0 0 1 0-2z" />
-                </svg>
-              </button>
+            <div
+              className="pt-6 w-full md:w-4/12 px-4 text-center cursor-pointer hover:scale-110 transition-all"
+              onClick={() => history("/report")}
+            >
+              <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+                <div className="px-4 py-5 flex-auto cursor-pointer">
+                  <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400">
+                    <i className="fas fa-clock-0"></i>
+                  </div>
+                  <h6 className="text-xl font-semibold">Reported Post</h6>
+                  <p className="mt-2 mb-4 text-blueGray-500">
+                    All the REPORTING post of the user are PLACE here
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex flex-col md:flex-row md:block -mx-2">
-            <Link
-              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              // to={"/profile"}
-            >
-              Profile
-            </Link>
-            <Link
-              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              to={"/report"}
-            >
-              Reported
-            </Link>
-            <Link
-              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              to={"/action"}
-            >
-              Approved
-            </Link>
-            <button
-              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              onClick={() => handlelogout()}
-            >
-              Logout
-            </button>
           </div>
         </div>
-      </nav>
-    </div>
+      </div>
+    </>
   );
 };
 

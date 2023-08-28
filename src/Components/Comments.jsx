@@ -48,7 +48,7 @@ const Comments = (props) => {
     <div className="flex justify-between w-full px-6 py-2 mr-3 resize-none outline-none rounded appearance-none border mt-4">
       <div>
         <h1 className="font-bold text-sm">{userDetails.name}</h1>
-        <h1>{props.content}</h1>
+        <p>{props.content}</p>
       </div>
       <div className="flex justify-between">
         <svg

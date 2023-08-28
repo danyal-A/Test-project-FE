@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import Login from "./Login";
-import SignUp from "./SignUp";
+import Login from "../pages/Login";
+import SignUp from "../pages/SignUp";
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);

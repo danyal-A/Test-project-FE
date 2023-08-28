@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
-import NavbarT from "./NavbarT";
+import NavbarT from "../Components/NavbarT";
 import { useNavigate, useParams } from "react-router-dom";
 import Lottie from "react-lottie-player";
 import profilelogo from "../Animations/animation_llnji2l0.json";
-import EditProfile from "./Modals/EditProfile";
+import EditProfile from "../Components/Modals/EditProfile";
 import axios from "axios";
+import NavbarM from "../Components/Moderator/NavbarM";
 
 const Profile = () => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
@@ -25,11 +26,15 @@ const Profile = () => {
       console.log(user.data);
     };
     fetchdata();
-  }, []);
+  }, [modalIsOpen]);
   console.log(details);
   return (
     <div>
-      <NavbarT userid={userdata.user.id} />
+      {userdata.user.role === "User" ? (
+        <NavbarT userid={userdata.user.id} />
+      ) : (
+        <NavbarM userid={userdata.user.id} />
+      )}
       {details && (
         <div className="max-w-lg mx-auto my-10 bg-white rounded-lg shadow-md p-5">
           <Lottie loop animationData={profilelogo} play />{" "}
@@ -47,12 +52,23 @@ const Profile = () => {
             </p>
           </div>
           <div className="text-center mt-4">
-            <button
-              className=" text-white bg-red-500 p-3 rounded font-bold"
-              onClick={() => history(`/timeline/${userdata.user.id}`)}
-            >
-              Close
-            </button>
+            {userdata.user.role === "User" ? (
+              <button
+                className=" text-white bg-red-500 p-3 rounded font-bold"
+                onClick={() => history(`/timeline/${userdata.user.id}`)}
+              >
+                Close
+              </button>
+            ) : (
+              <button
+                className=" text-white bg-red-500 p-3 rounded font-bold"
+                onClick={() =>
+                  history(`/timeline/moderator/${userdata.user.id}`)
+                }
+              >
+                Close
+              </button>
+            )}
             <button
               className=" text-white ml-2 bg-green-500 p-3 rounded font-bold"
               onClick={() => setModalIsOpen(true)}

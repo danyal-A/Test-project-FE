@@ -4,7 +4,8 @@ import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
+
+import { toast } from "react-toastify";
 
 const EditProfile = ({ isOpen, onRequestClose }) => {
   console.log("enter in edit");
@@ -19,6 +20,7 @@ const EditProfile = ({ isOpen, onRequestClose }) => {
       name,
       email,
     });
+    toast.success("Successfully Edited!");
     // Close the modal
     onRequestClose();
   };
@@ -52,7 +54,9 @@ const EditProfile = ({ isOpen, onRequestClose }) => {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={()=>onRequestClose()}>Close</Button>
+        <Button variant="secondary" onClick={() => onRequestClose()}>
+          Close
+        </Button>
         <Button variant="primary" onClick={handleSubmit}>
           Save Changes
         </Button>

@@ -1,24 +1,24 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Post from "./Post";
-import NavbarT from "./NavbarT";
+import Post from "../Components/Post";
+import NavbarT from "../Components/NavbarT";
 
 const Timeline = () => {
   const userid = useParams();
   const [posts, setPosts] = useState([]);
   // console.log(userid);
+  const fetchData = useCallback(async () => {
+    try {
+      //use of comments api for fetching comments
+      const res = await axios.get("http://localhost:8800/api/posts/list");
+      // console.log(res.data);
+      setPosts(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        //use of comments api for fetching comments
-        const res = await axios.get("http://localhost:8800/api/posts/list");
-        // console.log(res.data);
-        setPosts(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchData();
   }, []);
 
@@ -26,7 +26,7 @@ const Timeline = () => {
   return (
     <div>
       <div className="w-full">
-        <NavbarT userid={userid} />
+        <NavbarT userid={userid} fetchData={fetchData} />
         <div className="flex bg-white" style={{ height: "600px" }}>
           <div className="flex items-center text-left px-8 md:px-12 lg:w-1/2">
             <div>

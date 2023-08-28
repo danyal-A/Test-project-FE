@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NavbarT from "./NavbarT";
 import Comments from "./Comments";
+import { ToastContainer, toast } from "react-toastify";
 
 const Showpost = () => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
@@ -35,6 +36,18 @@ const Showpost = () => {
     fetchdata();
   }, [isLike, isCommented]);
   //   console.log(details);
+  const handleReported = async (id) => {
+    try {
+      const post = await axios.put(
+        `http://localhost:8800/api/posts/report/${id}`
+      );
+      toast.success("Successfully reported!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleAddComment = async () => {
     try {
       const comment = await axios.post(
@@ -45,7 +58,8 @@ const Showpost = () => {
           userid: userdata.user.id,
         }
       );
-      console.log(comment);
+      // console.log(comment);
+      toast.success("Comment added successfully!!");
       setIsCommented(true);
       setTextcomment("");
     } catch (error) {
@@ -57,6 +71,7 @@ const Showpost = () => {
       const post = await axios.delete(
         `http://localhost:8800/api/posts/${postid.id}`
       );
+      toast.success("Post Deleted successfully!");
       history(`/timeline/${postid.id}`);
     } catch (error) {
       console.log(error);
@@ -97,7 +112,7 @@ const Showpost = () => {
               </h1>
               {userdata.user.id === details.UserId && (
                 <i
-                  class="fa fa-trash fa-2xl"
+                  className="fa fa-trash fa-2xl cursor-pointer"
                   aria-hidden="true"
                   onClick={deletePost}
                 ></i>
@@ -127,7 +142,13 @@ const Showpost = () => {
                     {" "}
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
                   </svg>
-                  <i className="fa fa-xl fa-bug ml-4" aria-hidden="true"></i>
+                  {userdata.user.id !== details.UserId && (
+                    <i
+                      className="fa fa-xl fa-bug ml-4 cursor-pointer"
+                      aria-hidden="true"
+                      onClick={() => handleReported(details.id)}
+                    ></i>
+                  )}
                 </div>
                 <p className="text-gray-400 mt-4">{likes} likes</p>
               </div>

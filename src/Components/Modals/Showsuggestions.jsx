@@ -1,25 +1,28 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 const Showsuggestions = ({ isOpen, onRequestClose, userid }) => {
   const [suggestions, setSuggestions] = useState([]);
   const [isUpdate, setIsUpdate] = useState(false);
+
+  const fetchdata = useCallback(async () => {
+    try {
+      const suggestions = await axios.get(
+        `http://localhost:8800/api/suggestion/${userid.id}`
+      );
+      console.log(suggestions);
+      setSuggestions(suggestions.data);
+      setIsUpdate(true);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   useEffect(() => {
-    const fetchdata = async () => {
-      try {
-        const suggestions = await axios.get(
-          `http://localhost:8800/api/suggestion/${userid.id}`
-        );
-        console.log(suggestions);
-        setSuggestions(suggestions.data);
-        setIsUpdate(true);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchdata();
-  }, [isUpdate]);
+  }, []);
 
   const handleAccept = async (suggest) => {
     try {
@@ -29,8 +32,12 @@ const Showsuggestions = ({ isOpen, onRequestClose, userid }) => {
           content: suggest.content,
         }
       );
-      console.log(post);
-      setIsUpdate(true);
+      // console.log(post);
+      toast.success("Accepted suggestion!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      fetchdata();
+      // fetch();
     } catch (error) {
       console.log(error);
     }
@@ -42,24 +49,28 @@ const Showsuggestions = ({ isOpen, onRequestClose, userid }) => {
         `http://localhost:8800/api/suggestion/${id}`
       );
       console.log(sugesstion);
-      setIsUpdate(true);
+      toast.error("Rejected suggestion!", {
+        position: toast.POSITION.TOP_CENTER,
+      });
+      fetchdata();
+      // fetch();
     } catch (error) {
       console.log(error);
     }
   };
-  const handleReply = async (id) => {
-    try {
-      const suggest = await axios.put(
-        `http://localhost:8800/api/suggestion/${id}`,
-        {
-          // reply:
-        }
-      );
-      setIsUpdate(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  // const handleReply = async (id) => {
+  //   try {
+  //     const suggest = await axios.put(
+  //       `http://localhost:8800/api/suggestion/${id}`,
+  //       {
+  //         // reply:
+  //       }
+  //     );
+  //     setIsUpdate(true);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     <>
@@ -86,12 +97,12 @@ const Showsuggestions = ({ isOpen, onRequestClose, userid }) => {
               >
                 Accept
               </button>
-              <button
+              {/* <button
                 className=" text-white ml-2 bg-green-500 p-1.5 rounded font-bold"
                 onClick={() => handleReply(suggest.id)}
               >
                 Reply
-              </button>
+              </button> */}
               <button
                 className=" text-white ml-2 bg-red-500 p-1.5 rounded font-bold"
                 onClick={() => handleReject(suggest.id)}
