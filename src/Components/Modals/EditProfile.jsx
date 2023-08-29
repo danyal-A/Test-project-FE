@@ -1,10 +1,8 @@
 import axios from "axios";
 import React, { useState } from "react";
-// import Modal from "react-modal";
 import { Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-
 import { toast } from "react-toastify";
 
 const EditProfile = ({ isOpen, onRequestClose }) => {
@@ -15,7 +13,6 @@ const EditProfile = ({ isOpen, onRequestClose }) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Process the name and email data, e.g., send it to the backend
     await axios.put(`http://localhost:8800/api/users/${userdata.user.id}`, {
       name,
       email,

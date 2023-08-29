@@ -1,20 +1,15 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
+import { createSuggestion } from "../../Api/suggestion";
 const Suggestion = ({ isOpen, onRequestClose, user }) => {
   console.log("hello from suggestion");
   console.log(user);
   const [content, setContent] = useState("");
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await axios.post(`http://localhost:8800/api/suggestion/${user.id}`, {
-      content: content,
-      isProved: false,
-      userid: user.UserId,
-      reply: "reply",
-    });
+    await createSuggestion(user.id, content, user.UserId);
     toast.success("Suggestion send successfully!", {
       position: toast.POSITION.TOP_CENTER,
     });

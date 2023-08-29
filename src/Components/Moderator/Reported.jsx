@@ -1,13 +1,13 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import NavbarM from "./NavbarM";
 import Post from "../Post";
+import { getReported } from "../../Api/post";
 
 const Reported = () => {
   const [posts, setPosts] = useState([]);
   const fetchData = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/posts/report");
+      const res = await getReported();
       console.log("res", res.data);
       setPosts(res.data);
     } catch (error) {
@@ -27,7 +27,7 @@ const Reported = () => {
             Reporting Posts
           </h1>
           {posts.map((post, index) => (
-            <Post key={index} {...post} fetchData={fetchData}/>
+            <Post key={index} {...post} fetchData={fetchData} />
           ))}
         </div>
       ) : (

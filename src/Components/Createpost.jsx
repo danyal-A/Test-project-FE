@@ -1,12 +1,12 @@
-import axios from "axios";
-import React, { useMemo, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import React, { useState } from "react";
+import { toast } from "react-toastify";
+import { useNavigate, useParams } from "react-router-dom";
+import { createPost } from "../Api/post";
+import { addAttachment } from "../Api/attachment";
 const Createpost = () => {
   const history = useNavigate();
   const userid = useParams();
   const [image, setImage] = useState("");
-  const [file, setFile] = useState("");
   const [state, setState] = useState({
     title: "",
     content: "",
@@ -18,7 +18,6 @@ const Createpost = () => {
 
     reader.onloadend = () => {
       setImage(reader.result);
-      // console.log(image);
     };
   };
   const getdata = (e) => {
@@ -27,7 +26,6 @@ const Createpost = () => {
       ...state,
       [name]: value,
     });
-    console.log(state);
   };
   const hanndlecancel = () => {
     history(`/timeline/${userid.id}`);
@@ -35,11 +33,8 @@ const Createpost = () => {
   const handlecreatepost = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:8800/api/posts", state);
-      const result = await axios.post("http://localhost:8800/api/attachment/", {
-        photo: image,
-        PostId: res.data.id,
-      });
+      const res = await createPost(state);
+      await addAttachment(image, res.data.id);
       toast.success("Request send to Moderator!");
       history(`/timeline/${userid.id}`);
     } catch (error) {
@@ -55,11 +50,7 @@ const Createpost = () => {
   };
   const uploadAttachment = (e) => {
     const file = e.target.files[0];
-    setFile(file);
     previewFile(file);
-    // try {
-    //
-    // } catch (error) {}
   };
   return (
     <div>
@@ -69,7 +60,7 @@ const Createpost = () => {
       <div className="editor mx-auto w-10/12 flex flex-col text-gray-800 border border-gray-300 p-4 shadow-lg max-w-2xl">
         <input
           className="title bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
-          spellcheck="false"
+          spellCheck="false"
           placeholder="Title"
           type="text"
           name="title"
@@ -78,7 +69,7 @@ const Createpost = () => {
         />
         <textarea
           className="description bg-gray-100 sec p-3 h-60 border border-gray-300 outline-none"
-          spellcheck="false"
+          spellCheck="false"
           placeholder="Describe everything about this post here"
           onChange={getdata}
           name="content"
@@ -126,7 +117,6 @@ const Createpost = () => {
           </button>
         </div>
       </div>
-      <ToastContainer />
     </div>
   );
 };

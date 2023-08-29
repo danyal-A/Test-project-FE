@@ -1,18 +1,15 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Post from "../Components/Post";
 import NavbarT from "../Components/NavbarT";
+import { getPosts } from "../Api/post";
 
 const Timeline = () => {
   const userid = useParams();
   const [posts, setPosts] = useState([]);
-  // console.log(userid);
   const fetchData = useCallback(async () => {
     try {
-      //use of comments api for fetching comments
-      const res = await axios.get("http://localhost:8800/api/posts/list");
-      // console.log(res.data);
+      const res = await getPosts();
       setPosts(res.data);
     } catch (error) {
       console.log(error);
@@ -21,8 +18,6 @@ const Timeline = () => {
   useEffect(() => {
     fetchData();
   }, []);
-
-  console.log(posts);
   return (
     <div>
       <div className="w-full">
@@ -53,7 +48,6 @@ const Timeline = () => {
             className="hidden lg:block lg:w-1/2"
             style={{
               clipPath: "polygon(10% 0, 100% 0%, 100% 100%, 0 100%)",
-              // Other styles...
             }}
           >
             <div
@@ -61,7 +55,6 @@ const Timeline = () => {
               style={{
                 backgroundImage:
                   "url(https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1352&q=80)",
-                // Other styles...
               }}
             >
               <div className="h-full bg-black opacity-25"></div>

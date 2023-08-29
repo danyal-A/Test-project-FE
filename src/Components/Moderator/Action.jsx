@@ -1,17 +1,15 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useState } from "react";
 import Post from "../Post";
 import NavbarM from "./NavbarM";
 import { useParams } from "react-router-dom";
+import { getPosts } from "../../Api/post";
 
 const Action = () => {
   const [posts, setPosts] = useState([]);
   const userid = useParams();
   const fetchData = useCallback(async () => {
     try {
-      //use of comments api for fetching comments
-      const res = await axios.get("http://localhost:8800/api/posts/list");
-      // console.log(res.data);
+      const res = await getPosts();
       setPosts(res.data);
     } catch (error) {
       console.log(error);

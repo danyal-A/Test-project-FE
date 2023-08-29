@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import Lottie from "react-lottie-player";
-import { v4 as uuidv4 } from "uuid";
-import axios from "axios";
+// import axios from "axios";
 import signlogo from "../Animations/animation_ll6ibmq4.json";
-function SignUp() {
+import { registerUser } from "../Api/auth";
+const SignUp = () => {
   const [selectedValue, setSelectedValue] = useState("");
-
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const histoty = useNavigate();
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -15,34 +16,29 @@ function SignUp() {
     role: "",
   });
 
-  const histoty = useNavigate();
   const getdata = (event) => {
     const { name, value } = event.target;
-
-    // Update the state for the corresponding input field
     setData({
       ...data,
       [name]: value,
       role: selectedValue,
     });
   };
-
   const addData = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/register",
-        data
-      );
-      toast.success("Successfully SignUp", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-
-      histoty("/login");
+      if (data.password === confirmPassword) {
+        await registerUser(data);
+        toast.success("Successfully SignUp", {
+          position: toast.POSITION.TOP_CENTER,
+        });
+        histoty("/login");
+      } else {
+        toast.error("Incorrect confirmPassword");
+      }
     } catch (error) {
       if (error.response) {
         if (error.response.status === 409) {
-          // Handle duplicate email error
           toast.error(
             "Email is already in use. Please choose a different email.",
             {
@@ -50,7 +46,6 @@ function SignUp() {
             }
           );
         } else if (error.response.status === 400) {
-          // Handle role being null error
           toast.error("Please fill the required fields", {
             position: toast.POSITION.TOP_CENTER,
           });
@@ -65,45 +60,45 @@ function SignUp() {
 
   return (
     <div className="h-screen flex justify-center items-center space-x-12">
-      <div class="max-w-xs w-max">
+      <div className="max-w-xs w-max">
         <div className="flex justify-between">
-          <div class="form-check form-check-inline">
+          <div className="form-check form-check-inline">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="inlineRadioOptions"
               id="inlineRadio1"
               value="User"
               onChange={(e) => setSelectedValue(e.target.value)}
             />
-            <label class="form-check-label" for="inlineRadio1">
+            <label className="form-check-label" htmlFor="inlineRadio1">
               User
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div className="form-check form-check-inline">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="inlineRadioOptions"
               id="inlineRadio2"
               value="Moderator"
               onChange={(e) => setSelectedValue(e.target.value)}
             />
-            <label class="form-check-label" for="inlineRadio2">
+            <label className="form-check-label" htmlFor="inlineRadio2">
               Moderator
             </label>
           </div>
         </div>
-        <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
-          <div class="mb-4">
+        <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+          <div className="mb-4">
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="name"
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="name"
             >
               Name
             </label>
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="name"
               type="text"
               value={data.name}
@@ -112,15 +107,15 @@ function SignUp() {
               onChange={getdata}
             />
           </div>
-          <div class="mb-4">
+          <div className="mb-4">
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="email"
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="email"
             >
               Email
             </label>
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="email"
               type="email"
               value={data.email}
@@ -129,15 +124,15 @@ function SignUp() {
               onChange={getdata}
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="password"
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="password"
             >
               Password
             </label>
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="password"
               type="password"
               name="password"
@@ -146,26 +141,26 @@ function SignUp() {
               onChange={getdata}
             />
           </div>
-          <div class="mb-6">
+          <div className="mb-6">
             <label
-              class="block text-gray-700 text-sm font-bold mb-2"
-              for="confirmpassword"
+              className="block text-gray-700 text-sm font-bold mb-2"
+              htmlFor="confirmpassword"
             >
               Confirm Password
             </label>
             <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
               id="confirpassword"
               type="password"
-              value={data.confirmpassword}
+              value={confirmPassword}
               name="confirmpassword"
               placeholder="******************"
-              onChange={getdata}
+              onChange={(e) => setConfirmPassword(e.target.value)}
             />
           </div>
-          <div class="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <button
-              class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
               type="button"
               onClick={addData}
             >
@@ -176,13 +171,13 @@ function SignUp() {
             </Link>
           </div>
         </form>
-        <p class="text-center text-gray-500 text-xs">&copy; Danyal-1475</p>
+        <p className="text-center text-gray-500 text-xs">&copy; Danyal-1475</p>
       </div>
       <div>
         <Lottie loop animationData={signlogo} play />
       </div>
     </div>
   );
-}
+};
 
 export default SignUp;

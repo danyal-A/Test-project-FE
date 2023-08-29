@@ -1,4 +1,5 @@
 import "./App.css";
+import React from "react";
 import SignUp from "./pages/SignUp";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -16,28 +17,21 @@ import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
 function App() {
   return (
-    <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/Signup" element={<SignUp />} />
-          <Route path="/Login" element={<Login />} />
-          <Route path="/timeline/:id" element={<Timeline />} />
-          <Route path="/createpost/:id" element={<Createpost />} />
-          <Route path="/showpost/:id" element={<Showpost />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route
-            path="/timeline/moderator/:id"
-            element={<ModeratorTimeline />}
-          />
-          <Route path="/action/:id" element={<Action />} />
-          <Route path="/report" element={<Reported />} />
-
-          {/* <Route path="*" element={<NoPage />} /> */}
-        </Routes>
-      </BrowserRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/Signup" element={<SignUp />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/timeline/:id" element={<Timeline />} />
+        <Route path="/createpost/:id" element={<Createpost />} />
+        <Route path="/showpost/:id" element={<Showpost />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/timeline/moderator/:id" element={<ModeratorTimeline />} />
+        <Route path="/action/:id" element={<Action />} />
+        <Route path="/report" element={<Reported />} />
+      </Routes>
       <ToastContainer />
-    </>
+    </BrowserRouter>
   );
 }
 

@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from "react";
-import Modal from "react-modal";
 import NavbarT from "../Components/NavbarT";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Lottie from "react-lottie-player";
 import profilelogo from "../Animations/animation_llnji2l0.json";
 import EditProfile from "../Components/Modals/EditProfile";
-import axios from "axios";
 import NavbarM from "../Components/Moderator/NavbarM";
+import { getData } from "../Api/profile";
 
 const Profile = () => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
-  // const userid = useParams();
   const [details, setDetails] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const history = useNavigate();
@@ -19,15 +17,11 @@ const Profile = () => {
   };
   useEffect(() => {
     const fetchdata = async () => {
-      const user = await axios.get(
-        `http://localhost:8800/api/users/${userdata.user.id}`
-      );
+      const user = await getData(userdata);
       setDetails(user);
-      console.log(user.data);
     };
     fetchdata();
   }, [modalIsOpen]);
-  console.log(details);
   return (
     <div>
       {userdata.user.role === "User" ? (

@@ -1,20 +1,16 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { addLikesComment, getCommentLikes } from "../Api/like";
+import { getUser } from "../Api/user";
 
 const Comments = (props) => {
-  console.log(props);
   const [commentLikes, setCommentLikes] = useState("");
   const [userDetails, setUserDetails] = useState("");
   const [isLike, setIsLike] = useState(false);
   const [isFilled, setIsFilled] = useState(false);
   useEffect(() => {
     const fetchdata = async () => {
-      const likes = await axios.get(
-        `http://localhost:8800/api/like/comment/${props.id}`
-      );
-      const user = await axios.get(
-        `http://localhost:8800/api/users/${props.UserId}`
-      );
+      const likes = await getCommentLikes(props.id);
+      const user = await getUser(props.UserId);
       setUserDetails(user.data);
       setCommentLikes(likes.data);
       setIsLike(false);
@@ -24,14 +20,7 @@ const Comments = (props) => {
   const addLikeComment = async (commentid) => {
     try {
       if (!isFilled) {
-        const res = await axios.post("http://localhost:8800/api/like/comment", {
-          status: true,
-          commentid: commentid,
-          userid: props.UserId,
-        });
-
-        // setCommentLikes(commentLike);
-        console.log(res);
+        await addLikesComment(commentid, props.UserId);
         setIsFilled(!isFilled);
         setIsLike(true);
       }
@@ -57,9 +46,9 @@ const Comments = (props) => {
           fill={isFilled ? "red" : "none"}
           onClick={() => addLikeComment(props.id)}
           stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
+          strokeWidth="2"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         >
           {" "}
           <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />

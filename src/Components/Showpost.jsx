@@ -1,9 +1,11 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NavbarT from "./NavbarT";
 import Comments from "./Comments";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import { addComment } from "../Api/comment";
+import { postDetails, reportedPost } from "../Api/post";
+import { addLikes, getLikes, removeLikes } from "../Api/like";
 
 const Showpost = () => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
@@ -19,28 +21,21 @@ const Showpost = () => {
   useEffect(() => {
     const fetchdata = async () => {
       try {
-        const postDetails = await axios.get(
-          `http://localhost:8800/api/posts/${postid.id}`
-        );
-        const likes = await axios.get(
-          `http://localhost:8800/api/like/${postid.id}`
-        );
+        const postDetail = await postDetails(postid.id);
+        const likes = await getLikes(postid.id);
         setLikes(likes.data);
         setIsLike(false);
         setIsCommented(false);
-        setDetails(postDetails.data);
+        setDetails(postDetail.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchdata();
   }, [isLike, isCommented]);
-  //   console.log(details);
   const handleReported = async (id) => {
     try {
-      const post = await axios.put(
-        `http://localhost:8800/api/posts/report/${id}`
-      );
+      await reportedPost(id);
       toast.success("Successfully reported!", {
         position: toast.POSITION.TOP_CENTER,
       });
@@ -50,15 +45,7 @@ const Showpost = () => {
   };
   const handleAddComment = async () => {
     try {
-      const comment = await axios.post(
-        `http://localhost:8800/api/comments/${postid.id}`,
-        {
-          postid: postid,
-          content: textComment,
-          userid: userdata.user.id,
-        }
-      );
-      // console.log(comment);
+      await addComment(postid, textComment, userdata.user.id);
       toast.success("Comment added successfully!!");
       setIsCommented(true);
       setTextcomment("");
@@ -68,9 +55,7 @@ const Showpost = () => {
   };
   const deletePost = async () => {
     try {
-      const post = await axios.delete(
-        `http://localhost:8800/api/posts/${postid.id}`
-      );
+      await deletePost(postid.id);
       toast.success("Post Deleted successfully!");
       history(`/timeline/${postid.id}`);
     } catch (error) {
@@ -81,22 +66,22 @@ const Showpost = () => {
   const addLike = async () => {
     try {
       if (!isFilled) {
-        const res = await axios.post("http://localhost:8800/api/like", {
-          status: true,
-          postid: postid.id,
-          userid: userdata.user.id,
-        });
-        console.log(res);
+        await addLikes(postid.id, userdata.user.id);
         setIsFilled(!isFilled);
         setIsLike(true);
+      }else {
+        await removeLikes(postid.id, userdata.user.id);
+        setIsFilled(false);
+        // Toggle between like and dislike
+        setIsLike(!isLike);
       }
     } catch (error) {
+      console.log(error);
       if (error.response.status === 400) {
         setIsFilled(true);
       } else {
         setIsFilled(!isFilled);
       }
-      console.log(error);
     }
   };
 
@@ -135,9 +120,9 @@ const Showpost = () => {
                     fill={isFilled ? "red" : "none"}
                     onClick={addLike}
                     stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   >
                     {" "}
                     <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
@@ -153,19 +138,19 @@ const Showpost = () => {
                 <p className="text-gray-400 mt-4">{likes} likes</p>
               </div>
             </div>
-            <div class="pt-4 pb-1 pr-3">
-              <div class="flex items-start">
+            <div className="pt-4 pb-1 pr-3">
+              <div className="flex items-start">
                 <textarea
                   className="w-full px-6 py-2 mr-3 resize-none outline-none rounded appearance-none"
                   placeholder="Write Comment ...."
-                  autocomplete="off"
-                  autocorrect="off"
+                  autoComplete="off"
+                  autoCorrect="off"
                   value={textComment}
                   style={{ height: "40px" }}
                   onChange={(e) => setTextcomment(e.target.value)}
                 ></textarea>
                 <button
-                  class="inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-green-100 shadow-md duration-75 hover:bg-green-400"
+                  className="inline-block rounded-md bg-green-500 px-6 py-2 font-semibold text-green-100 shadow-md duration-75 hover:bg-green-400"
                   onClick={handleAddComment}
                 >
                   Add

@@ -3,7 +3,6 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 
 const NavbarM = ({ userid }) => {
   const history = useNavigate();
-  //   const userid = useParams();
   const handlelogout = () => {
     localStorage.removeItem("loginuser");
     localStorage.setItem("loggedin", false);

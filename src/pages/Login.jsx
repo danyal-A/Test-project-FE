@@ -2,9 +2,9 @@ import React from "react";
 import Lottie from "react-lottie-player";
 import loginImage from "../Animations/animation_ll6lbfrj.json";
 import { useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { loginUser } from "../Api/auth";
 
 export default function Login() {
   const history = useNavigate();
@@ -16,12 +16,9 @@ export default function Login() {
     password: "",
     role: "",
   });
-
-  // const [data, setData] = useState([]);
   const getdata = (event) => {
     const { name, value } = event.target;
     console.log(name, value);
-    // Update the state for the corresponding input field
     setData({
       ...data,
       [name]: value,
@@ -32,16 +29,10 @@ export default function Login() {
   const addData = async (event) => {
     event.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/login",
-        data
-      );
-      console.log(res.data.user.role);
+      const res = await loginUser(data);
+      console.log(res);
       localStorage.setItem("loginuser", JSON.stringify(res.data));
-      // , {headers:{
-      //   Authorization: "Bearer + token"
 
-      // }}
       if (res.data.user.role === "User") {
         toast.success("User Successfully Login", {
           position: toast.POSITION.TOP_CENTER,
@@ -58,7 +49,6 @@ export default function Login() {
         });
         history(`/timeline/admin/${res.data.user.id}`);
       }
-      // console.log(res.data.id);
     } catch (error) {
       if (error.response) {
         if (error.response.status === 429) {
@@ -70,7 +60,7 @@ export default function Login() {
           setTimeout(() => {
             setDisabled(false);
             setShowPopup(false);
-          }, 1 * 60 * 1000); // Re-enable after 5 minutes
+          }, 1 * 60 * 1000);
         } else if (error.response.data.error === "Invalid Email") {
           toast.error("Invalid Email", {
             position: toast.POSITION.TOP_CENTER,
@@ -85,34 +75,33 @@ export default function Login() {
       }
     }
   };
-  // console.log(selectedValue);
   return (
     <div className="h-screen flex justify-center items-center space-x-12">
       <div className="">
         <div className="flex justify-between">
-          <div class="form-check form-check-inline">
+          <div className="form-check form-check-inline">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="inlineRadioOptions"
               id="inlineRadio1"
               value="User"
               onChange={(e) => setSelectedValue(e.target.value)}
             />
-            <label class="form-check-label" for="inlineRadio1">
+            <label className="form-check-label" htmlFor="inlineRadio1">
               User
             </label>
           </div>
-          <div class="form-check form-check-inline">
+          <div className="form-check form-check-inline">
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="inlineRadioOptions"
               id="inlineRadio2"
               value="Moderator"
               onChange={(e) => setSelectedValue(e.target.value)}
             />
-            <label class="form-check-label" for="inlineRadio2">
+            <label className="form-check-label" htmlFor="inlineRadio2">
               Moderator
             </label>
           </div>
@@ -122,7 +111,7 @@ export default function Login() {
             <div className="mb-4">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                for="email"
+                htmlFor="email"
               >
                 Email
               </label>
@@ -140,7 +129,7 @@ export default function Login() {
             <div className="mb-6">
               <label
                 className="block text-gray-700 text-sm font-bold mb-2"
-                for="password"
+                htmlFor="password"
               >
                 Password
               </label>
