@@ -10,12 +10,12 @@ export const getPosts = async () => {
   return res;
 };
 
-export const getReported = async () =>{
+export const getReported = async () => {
   const res = await axios.get("http://localhost:8800/api/posts/report");
   return res;
-}
+};
 
-export const deletePost = async (id) => {
+export const deletePosts = async (id) => {
   const res = await axios.delete(`http://localhost:8800/api/posts/${id}`);
   return res;
 };

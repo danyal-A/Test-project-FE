@@ -33,7 +33,7 @@ const Suggestion = ({ isOpen, onRequestClose, user }) => {
           <h4>Content</h4>
           <textarea
             className="w-full bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
-            spellcheck="false"
+          
             placeholder="Write suggestion here...."
             type="text"
             name="title"

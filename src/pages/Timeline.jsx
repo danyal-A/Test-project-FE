@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Post from "../Components/Post";
-import NavbarT from "../Components/NavbarT";
+import Post from "../components/Post";
+import NavbarT from "../components/NavbarT";
 import { getPosts } from "../Api/post";
 
 const Timeline = () => {

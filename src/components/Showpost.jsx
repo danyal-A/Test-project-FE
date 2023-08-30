@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import NavbarT from "./NavbarT";
 import Comments from "./Comments";
 import { toast } from "react-toastify";
 import { addComment } from "../Api/comment";
-import { postDetails, reportedPost } from "../Api/post";
+import { deletePosts, postDetails, reportedPost } from "../Api/post";
 import { addLikes, getLikes, removeLikes } from "../Api/like";
 
 const Showpost = () => {
@@ -17,20 +17,19 @@ const Showpost = () => {
   const [likes, setLikes] = useState("");
   const [textComment, setTextcomment] = useState("");
   const [details, setDetails] = useState("");
-
+  const fetchdata = useCallback(async () => {
+    try {
+      const postDetail = await postDetails(postid.id);
+      const likes = await getLikes(postid.id);
+      setLikes(likes.data);
+      setIsLike(false);
+      setIsCommented(false);
+      setDetails(postDetail.data);
+    } catch (error) {
+      console.log(error);
+    }
+  });
   useEffect(() => {
-    const fetchdata = async () => {
-      try {
-        const postDetail = await postDetails(postid.id);
-        const likes = await getLikes(postid.id);
-        setLikes(likes.data);
-        setIsLike(false);
-        setIsCommented(false);
-        setDetails(postDetail.data);
-      } catch (error) {
-        console.log(error);
-      }
-    };
     fetchdata();
   }, [isLike, isCommented]);
   const handleReported = async (id) => {
@@ -45,17 +44,22 @@ const Showpost = () => {
   };
   const handleAddComment = async () => {
     try {
-      await addComment(postid, textComment, userdata.user.id);
+      await addComment(postid.id, textComment, userdata.user.id);
       toast.success("Comment added successfully!!");
       setIsCommented(true);
       setTextcomment("");
     } catch (error) {
-      console.log(error);
+      if (error.response) {
+        if (error.response.status === 400) {
+          toast.error(error.response.data.error);
+          console.log(error);
+        }
+      }
     }
   };
   const deletePost = async () => {
     try {
-      await deletePost(postid.id);
+      await deletePosts(postid.id);
       toast.success("Post Deleted successfully!");
       history(`/timeline/${postid.id}`);
     } catch (error) {
@@ -69,7 +73,7 @@ const Showpost = () => {
         await addLikes(postid.id, userdata.user.id);
         setIsFilled(!isFilled);
         setIsLike(true);
-      }else {
+      } else {
         await removeLikes(postid.id, userdata.user.id);
         setIsFilled(false);
         // Toggle between like and dislike
@@ -87,7 +91,7 @@ const Showpost = () => {
 
   return (
     <div>
-      <NavbarT />
+      <NavbarT userid={userdata.user.id} />
       {details && (
         <section className="bg-white">
           <div className="container px-6 py-10 mx-auto">

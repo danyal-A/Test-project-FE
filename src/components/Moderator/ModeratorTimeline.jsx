@@ -1,6 +1,5 @@
 import React from "react";
-import NavbarT from "../NavbarT";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import NavbarM from "./NavbarM";
 
 const ModeratorTimeline = () => {

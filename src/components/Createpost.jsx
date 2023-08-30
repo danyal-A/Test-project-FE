@@ -34,15 +34,15 @@ const Createpost = () => {
     e.preventDefault();
     try {
       const res = await createPost(state);
+      console.log(res);
       await addAttachment(image, res.data.id);
       toast.success("Request send to Moderator!");
       history(`/timeline/${userid.id}`);
     } catch (error) {
       if (error.response) {
-        if (error.response.data.error === "Field is required") {
-          toast.error("Field is required", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+        if(error.response.status === 400) {
+          toast.error(error.response.data.error);
+          console.log(error);                                                                                   
         }
       }
       console.log(error);
@@ -52,7 +52,7 @@ const Createpost = () => {
     const file = e.target.files[0];
     previewFile(file);
   };
-  return (
+  return (                                                              
     <div>
       <div className="heading text-center font-bold text-2xl m-5 text-gray-800">
         New Post

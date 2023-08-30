@@ -1,6 +1,6 @@
 import React from "react";
 import Lottie from "react-lottie-player";
-import loginImage from "../Animations/animation_ll6lbfrj.json";
+import loginImage from "../animations/animation_ll6lbfrj.json";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { Link, useNavigate } from "react-router-dom";
@@ -69,7 +69,8 @@ export default function Login() {
           toast.error("Invalid Password", {
             position: toast.POSITION.TOP_CENTER,
           });
-        } else {
+        } else if (error.response.status === 400) {
+          toast.error(error.response.data.error);
           console.log(error);
         }
       }

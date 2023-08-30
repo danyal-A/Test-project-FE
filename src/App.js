@@ -7,15 +7,17 @@ import Login from "./pages/Login";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Timeline from "./pages/Timeline";
-import Createpost from "./Components/Createpost";
-import Showpost from "./Components/Showpost";
+import Createpost from "./components/Createpost";
+import Showpost from "./components/Showpost";
 import Profile from "./pages/Profile";
-import ModeratorTimeline from "./Components/Moderator/ModeratorTimeline";
-import Action from "./Components/Moderator/Action";
-import Reported from "./Components/Moderator/Reported";
+import ModeratorTimeline from "./components/Moderator/ModeratorTimeline";
+import Action from "./components/Moderator/Action";
+import Reported from "./components/Moderator/Reported";
 import { ToastContainer } from "react-toastify";
 import "bootstrap/dist/css/bootstrap.min.css";
+
 function App() {
+
   return (
     <BrowserRouter>
       <Routes>

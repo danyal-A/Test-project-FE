@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Lottie from "react-lottie-player";
 // import axios from "axios";
-import signlogo from "../Animations/animation_ll6ibmq4.json";
+import signlogo from "../animations/animation_ll6ibmq4.json";
 import { registerUser } from "../Api/auth";
 const SignUp = () => {
   const [selectedValue, setSelectedValue] = useState("");
@@ -46,9 +46,15 @@ const SignUp = () => {
             }
           );
         } else if (error.response.status === 400) {
-          toast.error("Please fill the required fields", {
-            position: toast.POSITION.TOP_CENTER,
-          });
+          if (!error.response.data.error){
+            toast.error(error.response.data.errors[0].msg, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }else {
+            toast.error(error.response.data.error, {
+              position: toast.POSITION.TOP_CENTER,
+            });
+          }
         } else {
           console.log(error);
         }

@@ -1,29 +1,22 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Showsuggestions from "../Components/Modals/Showsuggestions";
 
-const NavbarT = ({ userid, fetchData }) => {
-  const [modalIsOpen, setModalIsOpen] = useState(false);
+const NavbarM = ({ userid }) => {
   const history = useNavigate();
-  const closemodal = () => {
-    setModalIsOpen(false);
-    fetchData();
-  };
   const handlelogout = () => {
     localStorage.removeItem("loginuser");
     localStorage.setItem("loggedin", false);
     history("/");
   };
-
   return (
-    <div>
+    <>
       <nav className="bg-white shadow-lg">
         <div className="md:flex items-center justify-between py-2 px-8 md:px-12">
           <div className="flex justify-between items-center">
             <div className="">
               <Link
                 className="text-2xl font-bold text-gray-800 md:text-3xl no-underline"
-                to={`/timeline/${userid}`}
+                to={`/timeline/moderator/${userid}`}
               >
                 Blog Application
               </Link>
@@ -50,12 +43,7 @@ const NavbarT = ({ userid, fetchData }) => {
             >
               Profile
             </Link>
-            <button
-              className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
-              onClick={() => setModalIsOpen(true)}
-            >
-              Suggestions
-            </button>
+
             <button
               className="text-gray-800 rounded hover:bg-gray-900 hover:text-gray-100 hover:font-medium py-2 px-2 md:mx-2 no-underline"
               onClick={() => handlelogout()}
@@ -65,15 +53,8 @@ const NavbarT = ({ userid, fetchData }) => {
           </div>
         </div>
       </nav>
-      {modalIsOpen && (
-        <Showsuggestions
-          isOpen={modalIsOpen}
-          onRequestClose={closemodal}
-          userid={userid}
-        />
-      )}
-    </div>
+    </>
   );
 };
 
-export default NavbarT;
+export default NavbarM;

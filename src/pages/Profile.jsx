@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import NavbarT from "../Components/NavbarT";
+import NavbarT from "../components/NavbarT";
 import { useNavigate } from "react-router-dom";
 import Lottie from "react-lottie-player";
-import profilelogo from "../Animations/animation_llnji2l0.json";
-import EditProfile from "../Components/Modals/EditProfile";
-import NavbarM from "../Components/Moderator/NavbarM";
+import profilelogo from "../animations/animation_llnji2l0.json";
+import EditProfile from "../components/Modals/EditProfile";
+import NavbarM from "../components/Moderator/NavbarM";
 import { getData } from "../Api/profile";
 
 const Profile = () => {

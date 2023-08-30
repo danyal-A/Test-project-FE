@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { approvedPost, deletePost } from "../Api/post";
+import { approvedPost, deletePosts } from "../Api/post";
 import Suggestion from "./Modals/Suggestion";
 
 const Post = (props) => {
@@ -9,6 +9,9 @@ const Post = (props) => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
   const closemodal = () => {
     setModalIsOpen(false);
+  };
+  const conditionCheck = (user, reported, status) => {
+    return user === "Moderator" && reported === true && status === true;
   };
   const handleApprove = async (id) => {
     try {
@@ -24,7 +27,7 @@ const Post = (props) => {
 
   const handleDisapprove = async (id) => {
     try {
-      await deletePost(id);
+      await deletePosts(id);
       props.fetchData();
       toast.error("Post deleted successfully!", {
         position: toast.POSITION.TOP_CENTER,
@@ -119,40 +122,38 @@ const Post = (props) => {
           </div>
         </div>
       )}
-      {userdata.user.role === "Moderator" &&
-        props.isReported === true &&
-        props.status === true && (
-          <div className="max-w-lg">
-            <div className="bg-white shadow-md border ml-6 border-gray-200 rounded-lg max-w-sm mb-5">
-              <a href="#">
-                <img
-                  className="rounded-t-lg"
-                  src={props.Attachments[0].content}
-                  alt=""
-                />
-              </a>
-              <div className="p-4">
-                <h5 className="text-gray-900 font-bold text-2xl tracking-tight mb-2 no-underline">
-                  {props.title}
-                </h5>
-                <div className="block">
-                  <p className="font-normal text-gray-700 mb-3 text-ellipsis h-12 overflow-hidden">
-                    {props.content}
-                  </p>
-                </div>
+      {conditionCheck(userdata.user.role, props.isReported, props.status) && (
+        <div className="max-w-lg">
+          <div className="bg-white shadow-md border ml-6 border-gray-200 rounded-lg max-w-sm mb-5">
+            <a href="#">
+              <img
+                className="rounded-t-lg"
+                src={props.Attachments[0].content}
+                alt=""
+              />
+            </a>
+            <div className="p-4">
+              <h5 className="text-gray-900 font-bold text-2xl tracking-tight mb-2 no-underline">
+                {props.title}
+              </h5>
+              <div className="block">
+                <p className="font-normal text-gray-700 mb-3 text-ellipsis h-12 overflow-hidden">
+                  {props.content}
+                </p>
+              </div>
 
-                <div className="flex text-center align-middle">
-                  <button
-                    className=" text-white bg-red-500 p-2 rounded font-bold"
-                    onClick={() => handleDisapprove(props.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
+              <div className="flex text-center align-middle">
+                <button
+                  className=" text-white bg-red-500 p-2 rounded font-bold"
+                  onClick={() => handleDisapprove(props.id)}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 };
