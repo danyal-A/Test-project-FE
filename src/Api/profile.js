@@ -1,8 +1,5 @@
 import axios from "axios";
+import APIS from ".";
 
-export const getData = async (userdata) => {
-  const res = await axios.get(
-    `http://localhost:8800/api/users/${userdata.user.id}`
-  );
-  return res;
-};
+export const getData = async (userdata) =>
+  await axios.get(`${APIS.Profile}/${userdata.user.id}`);

@@ -1,9 +1,8 @@
 import axios from "axios";
+import APIS from "./index";
 
-export const addAttachment = async (image, postid) => {
-  const res = await axios.post("http://localhost:8800/api/attachment/", {
+export const addAttachment = async (image, postid) =>
+  axios.post(APIS.attachments, {
     photo: image,
     PostId: postid,
   });
-  return res;
-};

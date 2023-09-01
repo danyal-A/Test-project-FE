@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Showsuggestions from "./Modals/Showsuggestions";
+import Showsuggestions from "../Modals/Showsuggestions";
 
 const NavbarT = ({ userid }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -8,6 +8,7 @@ const NavbarT = ({ userid }) => {
   const closemodal = () => {
     setModalIsOpen(false);
   };
+
   const handlelogout = () => {
     localStorage.removeItem("loginuser");
     localStorage.setItem("loggedin", false);

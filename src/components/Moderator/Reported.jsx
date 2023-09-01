@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from "react";
 import NavbarM from "./NavbarM";
-import Post from "../Post";
+
 import { getReported } from "../../Api/post";
+import Post from "../common/Post";
 
 const Reported = () => {
   const [posts, setPosts] = useState([]);

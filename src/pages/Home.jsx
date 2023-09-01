@@ -1,11 +1,9 @@
 import React from "react";
-import background from "../Images/Background.jpg";
 
-import NavbarT from "../components/NavbarT";
+import background from "../Images/Background.jpg";
+import NavbarT from "../components/common/NavbarT";
 
 const Home = () => {
-  const base = process.env.BASE_URL;
-  console.log(base);
   return (
     <section className="relative">
       <div className="relative pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75">

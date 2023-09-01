@@ -24,6 +24,7 @@ const SignUp = () => {
       role: selectedValue,
     });
   };
+
   const addData = async (event) => {
     event.preventDefault();
     try {
@@ -32,6 +33,7 @@ const SignUp = () => {
         toast.success("Successfully SignUp", {
           position: toast.POSITION.TOP_CENTER,
         });
+
         histoty("/login");
       } else {
         toast.error("Incorrect confirmPassword");
@@ -46,20 +48,16 @@ const SignUp = () => {
             }
           );
         } else if (error.response.status === 400) {
-          if (!error.response.data.error){
+          if (!error.response.data.error) {
             toast.error(error.response.data.errors[0].msg, {
               position: toast.POSITION.TOP_CENTER,
             });
-          }else {
+          } else {
             toast.error(error.response.data.error, {
               position: toast.POSITION.TOP_CENTER,
             });
           }
-        } else {
-          console.log(error);
         }
-      } else {
-        console.log(error);
       }
     }
   };

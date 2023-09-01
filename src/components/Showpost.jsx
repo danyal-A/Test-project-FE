@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import NavbarT from "./NavbarT";
+import NavbarT from "./common/NavbarT";
 import Comments from "./Comments";
 import { toast } from "react-toastify";
 import { addComment } from "../Api/comment";
@@ -17,6 +17,7 @@ const Showpost = () => {
   const [likes, setLikes] = useState("");
   const [textComment, setTextcomment] = useState("");
   const [details, setDetails] = useState("");
+
   const fetchdata = useCallback(async () => {
     try {
       const postDetail = await postDetails(postid.id);
@@ -29,19 +30,18 @@ const Showpost = () => {
       console.log(error);
     }
   });
+
   useEffect(() => {
     fetchdata();
   }, [isLike, isCommented]);
+
   const handleReported = async (id) => {
-    try {
-      await reportedPost(id);
-      toast.success("Successfully reported!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await reportedPost(id);
+    toast.success("Successfully reported!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
+
   const handleAddComment = async () => {
     try {
       await addComment(postid.id, textComment, userdata.user.id);
@@ -57,14 +57,11 @@ const Showpost = () => {
       }
     }
   };
+
   const deletePost = async () => {
-    try {
-      await deletePosts(postid.id);
-      toast.success("Post Deleted successfully!");
-      history(`/timeline/${postid.id}`);
-    } catch (error) {
-      console.log(error);
-    }
+    await deletePosts(postid.id);
+    toast.success("Post Deleted successfully!");
+    history(`/timeline/${postid.id}`);
   };
 
   const addLike = async () => {
@@ -76,7 +73,6 @@ const Showpost = () => {
       } else {
         await removeLikes(postid.id, userdata.user.id);
         setIsFilled(false);
-        // Toggle between like and dislike
         setIsLike(!isLike);
       }
     } catch (error) {

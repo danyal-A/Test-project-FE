@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useState } from "react";
-import Post from "../Post";
+
 import NavbarM from "./NavbarM";
 import { useParams } from "react-router-dom";
 import { getPosts } from "../../Api/post";
+import Post from "../common/Post";
 
 const Action = () => {
   const [posts, setPosts] = useState([]);

@@ -8,6 +8,7 @@ import { loginUser } from "../Api/auth";
 
 export default function Login() {
   const history = useNavigate();
+
   const [selectedValue, setSelectedValue] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -16,6 +17,7 @@ export default function Login() {
     password: "",
     role: "",
   });
+
   const getdata = (event) => {
     const { name, value } = event.target;
     console.log(name, value);
@@ -37,16 +39,19 @@ export default function Login() {
         toast.success("User Successfully Login", {
           position: toast.POSITION.TOP_CENTER,
         });
+
         history(`/timeline/${res.data.user.id}`);
       } else if (res.data.user.role === "Moderator") {
         toast.success("Moderator Successfully Login", {
           position: toast.POSITION.TOP_CENTER,
         });
+
         history(`/timeline/moderator/${res.data.user.id}`);
       } else {
         toast.success("Admin Successfully Login", {
           position: toast.POSITION.TOP_CENTER,
         });
+
         history(`/timeline/admin/${res.data.user.id}`);
       }
     } catch (error) {
@@ -55,6 +60,7 @@ export default function Login() {
           toast.error("Login is Disabled for 5 minutes", {
             position: toast.POSITION.TOP_CENTER,
           });
+
           setDisabled(true);
           setShowPopup(true);
           setTimeout(() => {
@@ -71,11 +77,11 @@ export default function Login() {
           });
         } else if (error.response.status === 400) {
           toast.error(error.response.data.error);
-          console.log(error);
         }
       }
     }
   };
+
   return (
     <div className="h-screen flex justify-center items-center space-x-12">
       <div className="">

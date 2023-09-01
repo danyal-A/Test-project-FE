@@ -1,40 +1,35 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { approvedPost, deletePosts } from "../Api/post";
-import Suggestion from "./Modals/Suggestion";
+import { approvedPost, deletePosts } from "../../Api/post";
+import Suggestion from "../Modals/Suggestion";
 
 const Post = (props) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
+
   const closemodal = () => {
     setModalIsOpen(false);
   };
+
   const conditionCheck = (user, reported, status) => {
     return user === "Moderator" && reported === true && status === true;
   };
+
   const handleApprove = async (id) => {
-    try {
-      await approvedPost(id);
-      props.fetchData();
-      toast.success("Post approved successfully!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await approvedPost(id);
+    props.fetchData();
+    toast.success("Post approved successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   const handleDisapprove = async (id) => {
-    try {
-      await deletePosts(id);
-      props.fetchData();
-      toast.error("Post deleted successfully!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    await deletePosts(id);
+    props.fetchData();
+    toast.error("Post deleted successfully!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
   };
 
   return (

@@ -1,20 +1,23 @@
 import React, { useEffect, useState } from "react";
-import NavbarT from "../components/NavbarT";
+
 import { useNavigate } from "react-router-dom";
 import Lottie from "react-lottie-player";
 import profilelogo from "../animations/animation_llnji2l0.json";
 import EditProfile from "../components/Modals/EditProfile";
 import NavbarM from "../components/Moderator/NavbarM";
 import { getData } from "../Api/profile";
+import NavbarT from "../components/common/NavbarT";
 
 const Profile = () => {
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
   const [details, setDetails] = useState();
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const history = useNavigate();
+
   const closemodal = () => {
     setModalIsOpen(false);
   };
+
   useEffect(() => {
     const fetchdata = async () => {
       const user = await getData(userdata);
@@ -22,6 +25,7 @@ const Profile = () => {
     };
     fetchdata();
   }, [modalIsOpen]);
+  
   return (
     <div>
       {userdata.user.role === "User" ? (

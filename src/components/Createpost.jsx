@@ -12,6 +12,7 @@ const Createpost = () => {
     content: "",
     UserId: userid.id,
   });
+
   const previewFile = (file) => {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -20,6 +21,7 @@ const Createpost = () => {
       setImage(reader.result);
     };
   };
+
   const getdata = (e) => {
     const { name, value } = e.target;
     setState({
@@ -27,9 +29,11 @@ const Createpost = () => {
       [name]: value,
     });
   };
+
   const hanndlecancel = () => {
     history(`/timeline/${userid.id}`);
   };
+
   const handlecreatepost = async (e) => {
     e.preventDefault();
     try {
@@ -40,19 +44,20 @@ const Createpost = () => {
       history(`/timeline/${userid.id}`);
     } catch (error) {
       if (error.response) {
-        if(error.response.status === 400) {
+        if (error.response.status === 400) {
           toast.error(error.response.data.error);
-          console.log(error);                                                                                   
+          console.log(error);
         }
       }
-      console.log(error);
     }
   };
+
   const uploadAttachment = (e) => {
     const file = e.target.files[0];
     previewFile(file);
   };
-  return (                                                              
+
+  return (
     <div>
       <div className="heading text-center font-bold text-2xl m-5 text-gray-800">
         New Post

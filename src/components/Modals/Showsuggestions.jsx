@@ -24,27 +24,19 @@ const Showsuggestions = ({ isOpen, onRequestClose, userid }) => {
   }, []);
 
   const handleAccept = async (suggest) => {
-    try {
-      await modifySuggestion(suggest.PostId, suggest.content);
-      toast.success("Accepted suggestion!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      fetchdata();
-    } catch (error) {
-      console.log(error);
-    }
+    await modifySuggestion(suggest.PostId, suggest.content);
+    toast.success("Accepted suggestion!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    fetchdata();
   };
 
   const handleReject = async (id) => {
-    try {
-      await deleteSuggestion(id);
-      toast.error("Rejected suggestion!", {
-        position: toast.POSITION.TOP_CENTER,
-      });
-      fetchdata();
-    } catch (error) {
-      console.log(error);
-    }
+    await deleteSuggestion(id);
+    toast.error("Rejected suggestion!", {
+      position: toast.POSITION.TOP_CENTER,
+    });
+    fetchdata();
   };
 
   return (

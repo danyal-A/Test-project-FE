@@ -1,7 +1,8 @@
 import axios from "axios";
+import APIS from ".";
 
 export const addLikes = async (postid, userid) => {
-  const res = await axios.post("http://localhost:8800/api/like", {
+  const res = await axios.post(APIS.Like, {
     status: true,
     postid: postid,
     userid: userid,
@@ -10,17 +11,17 @@ export const addLikes = async (postid, userid) => {
 };
 
 export const getLikes = async (id) => {
-  const res = await axios.get(`http://localhost:8800/api/like/${id}`);
+  const res = await axios.get(`${APIS.Like}/${id}`);
   return res;
 };
 
 export const getCommentLikes = async (id) => {
-  const res = await axios.get(`http://localhost:8800/api/like/comment/${id}`);
+  const res = await axios.get(`${APIS.Like}/comment/${id}`);
   return res;
 };
 
 export const addLikesComment = async (commentid, userid) => {
-  const res = await axios.post("http://localhost:8800/api/like/comment", {
+  const res = await axios.post(`${APIS.Like}/comment`, {
     status: true,
     commentid: commentid,
     userid: userid,
@@ -30,7 +31,14 @@ export const addLikesComment = async (commentid, userid) => {
 
 export const removeLikes = async (postid, userid) => {
   const res = await axios.delete(
-    `http://localhost:8800/api/like/${postid}/likes/${userid}`
+    `${APIS.Like}/${postid}/likes/${userid}`
   );
   return res;
 };
+
+export const removeLikesComment = async (commentid, userid) =>{
+  const res = await axios.delete(
+    `${APIS.Like}/${commentid}/likes/${userid}`
+  );
+  return res;
+}

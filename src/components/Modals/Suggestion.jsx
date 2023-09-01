@@ -4,9 +4,8 @@ import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { createSuggestion } from "../../Api/suggestion";
 const Suggestion = ({ isOpen, onRequestClose, user }) => {
-  console.log("hello from suggestion");
-  console.log(user);
   const [content, setContent] = useState("");
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     await createSuggestion(user.id, content, user.UserId);
@@ -15,6 +14,7 @@ const Suggestion = ({ isOpen, onRequestClose, user }) => {
     });
     onRequestClose();
   };
+
   return (
     <>
       <Modal
@@ -33,7 +33,6 @@ const Suggestion = ({ isOpen, onRequestClose, user }) => {
           <h4>Content</h4>
           <textarea
             className="w-full bg-gray-100 border border-gray-300 p-2 mb-4 outline-none"
-          
             placeholder="Write suggestion here...."
             type="text"
             name="title"

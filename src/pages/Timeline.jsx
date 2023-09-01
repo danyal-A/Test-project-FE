@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import Post from "../components/Post";
-import NavbarT from "../components/NavbarT";
+import Post from "../components/common/Post";
+import NavbarT from "../components/common/NavbarT";
 import { getPosts } from "../Api/post";
 
 const Timeline = () => {
   const userid = useParams();
   const [posts, setPosts] = useState([]);
+
   const fetchData = useCallback(async () => {
     try {
       const res = await getPosts();
@@ -15,9 +16,11 @@ const Timeline = () => {
       console.log(error);
     }
   }, []);
+
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div>
       <div className="w-full">

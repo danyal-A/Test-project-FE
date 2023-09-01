@@ -6,7 +6,6 @@ import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 
 const EditProfile = ({ isOpen, onRequestClose }) => {
-  console.log("enter in edit");
   const userdata = JSON.parse(localStorage.getItem("loginuser"));
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,7 +17,6 @@ const EditProfile = ({ isOpen, onRequestClose }) => {
       email,
     });
     toast.success("Successfully Edited!");
-    // Close the modal
     onRequestClose();
   };
 
